@@ -334,7 +334,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12"><div class="form-groupheads"><h2>SMS Auto-Notifications</h2></div></div>
-
+<div class="col-md-4">
+                <div class="form-check form-switch">
+                    <input type="checkbox" name="email_on_absence" id="email_on_absence" value="1" class="form-check-input" {{ old('email_on_absence', $school?->email_on_absence) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="email_on_absence">
+                        <strong>Email on Absence</strong>
+                        <div class="text-muted small">Send email to parent when student is marked absent</div>
+                    </label>
+                </div>
+            </div>
                         <div class="col-lg-4 col-sm-12">
                             <div class="form-group form-check form-switch">
                                 <input type="hidden" name="sms_on_absence" value="0">

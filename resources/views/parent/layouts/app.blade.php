@@ -74,7 +74,7 @@ $school            = \App\Models\SchoolProfile::first();
         .dropdown-menu { position: absolute; right: 0; top: calc(100% + 0.5rem); width: 14rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); opacity: 0; pointer-events: none; transform: translateY(-4px); transition: all 0.15s; z-index: 50; }
         .dropdown-menu.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
     </style>
-    @stack('styles')    
+    @stack('styles')
 </head>
 <body class="bg-gray-100 text-gray-700 font-body antialiased">
 
@@ -107,7 +107,7 @@ $school            = \App\Models\SchoolProfile::first();
                 </div>
             @endif
 
-            @yield('content')
+            
         </main>
 
         @include('parent.layouts.partials.footer')

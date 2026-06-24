@@ -13,45 +13,66 @@
   </div>
 
   <h1 class="font-display text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
-  <p class="text-gray-500 mb-6">Your payment of <strong class="text-gray-900">₦{{ number_format($amountPaid) }}</strong> has been confirmed.</p>
+  <p class="text-gray-500 mb-6">
+    @if($amountPaid > 0)
+      Your payment of <strong class="text-gray-900">₦{{ number_format($amountPaid) }}</strong> has been confirmed.
+    @else
+      Your payment is being processed.
+    @endif
+  </p>
 
-  <div class="bg-white rounded-2xl border border-gray-200 p-5 mb-5 text-left">
-    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
-      <div>
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Reference</p>
-        <p class="text-sm font-bold text-gray-900 font-mono">{{ $reference }}</p>
-      </div>
-      <div class="text-right">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Date</p>
-        <p class="text-sm text-gray-600">{{ now()->format('d M Y, H:i') }}</p>
-      </div>
-    </div>
-
-    <div class="space-y-3 mb-4 pb-4 border-b border-gray-100">
-      @forelse($itemsPaid as $item)
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-semibold text-gray-900">{{ $item['category'] }}</p>
-            <p class="text-xs text-gray-400">{{ $item['child'] }}</p>
-          </div>
-          <p class="text-sm font-bold text-gray-900">₦{{ number_format($item['amount']) }}</p>
+  @if($payment)
+    <div class="bg-white rounded-2xl border border-gray-200 p-5 mb-5 text-left">
+      <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
+        <div>
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Reference</p>
+          <p class="text-sm font-bold text-gray-900 font-mono">{{ $reference }}</p>
         </div>
-      @empty
-        <p class="text-sm text-gray-500">General payment recorded.</p>
-      @endforelse
-    </div>
+        <div class="text-right">
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Date</p>
+          <p class="text-sm text-gray-600">{{ $payment->paid_at?->format('d M Y, H:i') ?? now()->format('d M Y, H:i') }}</p>
+        </div>
+      </div>
 
-    <div class="flex items-center justify-between">
-      <p class="font-bold text-gray-900">Total Paid</p>
-      <p class="font-display font-bold text-xl text-green-700">₦{{ number_format($amountPaid) }}</p>
+      <div class="space-y-3 mb-4 pb-4 border-b border-gray-100">
+        @forelse($itemsPaid as $item)
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-semibold text-gray-900">{{ $item['category'] }}</p>
+              <p class="text-xs text-gray-400">{{ $item['child'] }}</p>
+            </div>
+            <p class="text-sm font-bold text-gray-900">₦{{ number_format($item['amount']) }}</p>
+          </div>
+        @empty
+          <p class="text-sm text-gray-500">General payment recorded.</p>
+        @endforelse
+      </div>
+
+      @if($payment->receipt_number)
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Receipt No</p>
+          <p class="text-sm font-bold text-gray-900 font-mono">{{ $payment->receipt_number }}</p>
+        </div>
+      @endif
+
+      <div class="flex items-center justify-between">
+        <p class="font-bold text-gray-900">Total Paid</p>
+        <p class="font-display font-bold text-xl text-green-700">₦{{ number_format($amountPaid) }}</p>
+      </div>
     </div>
-  </div>
+  @else
+    <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mb-5 text-left">
+      <p class="text-sm text-yellow-800">We couldn't find the payment details. If you completed a payment, please check your <a href="{{ route('parent.fees.history') }}" class="underline font-semibold">payment history</a> in a few minutes.</p>
+    </div>
+  @endif
 
   <div class="flex flex-col sm:flex-row gap-3">
-    <a href="{{ route('parent.fees.receipt', $reference) }}" class="download-btn flex-1">
-      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Download Receipt
-    </a>
+    @if($payment && $payment->status === 'Verified')
+      <a href="{{ route('parent.fees.receipt', $reference) }}" class="download-btn flex-1">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Receipt
+      </a>
+    @endif
     <a href="{{ route('parent.fees.history') }}" class="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 border-2 border-gray-200 rounded-2xl text-sm font-bold text-gray-700 hover:border-gray-300 hover:bg-gray-50 transition-all">
       Payment History
     </a>

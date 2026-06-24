@@ -39,4 +39,12 @@ return [
     'secret_key' => env('PAYSTACK_SECRET_KEY'),
     'public_key' => env('PAYSTACK_PUBLIC_KEY'),
 ],
+
+
+'termii' => [
+    'api_key' => env('TERMII_API_KEY'),
+    'sender_id' => env('TERMII_SENDER_ID', 'School'),
+],
 ];
+    
+

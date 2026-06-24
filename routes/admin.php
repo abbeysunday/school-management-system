@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AcademicSessionController;
 use App\Http\Controllers\Admin\ArmSubjectController;
+use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\AttendanceReportController;
 use App\Http\Controllers\Admin\ClassArmController;
 use App\Http\Controllers\Admin\ClassLevelController;
 use App\Http\Controllers\Admin\ParentController;
@@ -11,14 +13,19 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentEnrollmentController;
 use App\Http\Controllers\Admin\CbtExamController;
+use App\Http\Controllers\Admin\EmailController;
 use App\Http\Controllers\Admin\FeeCategoryController;
 use App\Http\Controllers\Admin\FeeLedgerController;
+use App\Http\Controllers\Admin\FeeReportController;
 use App\Http\Controllers\Admin\FeeStructureController;
 use App\Http\Controllers\Admin\LedgerController;
+use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\SmsController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherAssignmentController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\TermController;
+use App\Http\Controllers\Admin\TimetableController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified', 'role:admin,principal,bursar'])
@@ -197,6 +204,14 @@ Route::delete('/fees/ledger/{ledger}/discount', [FeeLedgerController::class, 're
 
 
 
+/* ── Manual Payments ── */
+/* ── Manual Payments (Bursar/Admin) ── */
+Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
+Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+Route::get('/payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
+Route::get('/payments/{payment}/receipt', [PaymentController::class, 'receipt'])->name('payments.receipt');
+
 /* ── Fee Ledger ── */
 Route::get('/ledger', [LedgerController::class, 'index'])->name('ledger.index');
 Route::get('/ledger/{student}', [LedgerController::class, 'show'])->name('ledger.show');
@@ -218,8 +233,58 @@ Route::resource('teachers', TeacherController::class);
     Route::post('teacher-assignments/{teacher}/update', [TeacherAssignmentController::class, 'updateAssignments'])->name('teachers.assignments.update');
 
 
+
+
+
+
+/* ── Fee Reports ── */
+Route::get('/fees/defaulters', [FeeReportController::class, 'defaulters'])->name('fees.defaulters');
+Route::get('/fees/defaulters/export', [FeeReportController::class, 'exportDefaulters'])->name('fees.defaulters.export');
+Route::get('/fees/financial-summary', [FeeReportController::class, 'financialSummary'])->name('fees.financial-summary');
+Route::get('/fees/financial-summary/pdf', [FeeReportController::class, 'exportFinancialSummaryPdf'])->name('fees.financial-summary.pdf');
+
+/* ── SMS ── */
+Route::get('/sms/compose', [SmsController::class, 'compose'])->name('sms.compose');
+Route::post('/sms/send', [SmsController::class, 'send'])->name('sms.send');
+Route::get('/sms/logs', [SmsController::class, 'logs'])->name('sms.logs');
+
+/* ── Email ── */
+Route::get('/email/compose', [EmailController::class, 'compose'])->name('email.compose');
+Route::post('/email/send', [EmailController::class, 'send'])->name('email.send');
+Route::post('/email/preview', [EmailController::class, 'preview'])->name('email.preview');
+
+
+
+
+/* ── Admin Attendance ── */
+Route::get('/attendance/records', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('/attendance/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
+Route::put('/attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
+
+
+
+/* ── Attendance Reports ── */
+Route::get('/attendance/report', [AttendanceReportController::class, 'report'])->name('attendance.report');
+Route::get('/attendance/report/export', [AttendanceReportController::class, 'exportReport'])->name('attendance.report.export');
+Route::get('/attendance/student-summary', [AttendanceReportController::class, 'studentSummary'])->name('attendance.student-summary');
+Route::get('/attendance/calculate-summaries', [AttendanceReportController::class, 'calculateTermSummaries'])->name('attendance.calculate-summaries');
+Route::get('/attendance/class-register', [AttendanceReportController::class, 'classRegister'])->name('attendance.class-register');
+
+
+
+/* ── Admin Timetable ── */
+Route::get('/timetable/periods', [TimetableController::class, 'periods'])->name('timetable.periods');
+Route::post('/timetable/periods', [TimetableController::class, 'storePeriod'])->name('timetable.periods.store');
+Route::put('/timetable/periods/{period}', [TimetableController::class, 'updatePeriod'])->name('timetable.periods.update');
+Route::delete('/timetable/periods/{period}', [TimetableController::class, 'destroyPeriod'])->name('timetable.periods.destroy');
+Route::get('/timetable/builder', [TimetableController::class, 'builder'])->name('timetable.builder');
+Route::post('/timetable', [TimetableController::class, 'store'])->name('timetable.store');
+Route::delete('/timetable/{timetable}', [TimetableController::class, 'destroy'])->name('timetable.destroy');
+Route::post('/timetable/copy', [TimetableController::class, 'copyTimetable'])->name('timetable.copy');
+Route::get('/timetable/print', [TimetableController::class, 'print'])->name('timetable.print');
+
+
+
+
+
 });
-
-
-
-

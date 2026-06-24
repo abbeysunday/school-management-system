@@ -18,7 +18,7 @@ class SchoolProfile extends Model
         'paystack_public_key','paystack_secret_key',
         'termii_api_key','termii_sender_id',
         'mail_from_address','mail_from_name',
-        'sms_on_absence','sms_on_payment','sms_on_result_publish',
+        'sms_on_absence','sms_on_payment','sms_on_result_publish','email_on_absence',
     ];
 
     protected $casts = [

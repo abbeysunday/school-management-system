@@ -9,6 +9,7 @@
  *   require __DIR__.'/student.php';
  */
 
+use App\Http\Controllers\Student\TimetableController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('student')->name('student.')->group(function () {
@@ -18,8 +19,10 @@ Route::prefix('student')->name('student.')->group(function () {
          ->name('dashboard');
 
     // ── Timetable ──────────────────────────────────────────
-    Route::get('/timetable', fn () => view('student.timetable.index'))
-         ->name('timetable.index');
+    /* ── Student Timetable ── */
+Route::get('/timetable', [TimetableController::class, 'myTimetable'])->name('timetable.index');
+Route::get('/timetable/print', [TimetableController::class, 'print'])
+    ->name('timetable.print');
 
     // ── Results ────────────────────────────────────────────
     Route::get('/results', fn () => view('student.results.index'))
@@ -81,5 +84,6 @@ Route::prefix('student')->name('student.')->group(function () {
     Route::post('/profile/password', fn () =>
         back()->with('success', 'Password changed successfully.'))
          ->name('profile.password');
+
 
 });

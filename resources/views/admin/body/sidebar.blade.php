@@ -124,7 +124,7 @@
                         {{-- ── Fees ── --}}
                         <li class="menu-title"><h6>Fees</h6></li>
 
-                        <li class="submenu {{ request()->routeIs('admin.fees.*') ? 'active' : '' }}">
+                        <li class="submenu {{ request()->routeIs('admin.fees.*', 'admin.payments.*') ? 'active' : '' }}">
                             <a href="javascript:void(0);">
                                 <i class="fe fe-dollar-sign"></i>
                                 <span>Fee Management</span>
@@ -140,8 +140,54 @@
                                 <li class="{{ request()->routeIs('admin.fees.structure') ? 'active' : '' }}">
                                     <a href="{{ route('admin.fees.structure') }}">Fee Structure Grid</a>
                                 </li>
+                                <li class="{{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.payments.index') }}">Manual Payments</a>
+                                </li>
                             </ul>
                         </li>
+
+                        <li class="submenu">
+    <a href="#"><i class="fe fe-file-text"></i> <span>Reports</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{ route('admin.fees.defaulters') }}">Fee Defaulters</a></li>
+        <li><a href="{{ route('admin.fees.financial-summary') }}">Financial Summary</a></li>
+    </ul>
+</li>
+<li class="submenu">
+    <a href="#"><i class="fe fe-message-square"></i> <span>Communications</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{ route('admin.sms.compose') }}">Send SMS</a></li>
+        <li><a href="{{ route('admin.email.compose') }}">Send Email</a></li>
+    </ul>
+</li>
+
+<li>
+    <a href="{{ route('admin.attendance.index') }}">
+        <i class="fe fe-calendar"></i><span>Attendance Records</span>
+    </a>
+</li>
+
+
+<li>
+    <a href="{{ route('admin.attendance.report') }}">
+        <i class="fe fe-file-text"></i><span>Attendance Report</span>
+    </a>
+</li>
+<li>
+    <a href="{{ route('admin.attendance.student-summary') }}">
+        <i class="fe fe-bar-chart-2"></i><span>Attendance Summary</span>
+    </a>
+</li>
+
+
+<li class="submenu">
+    <a href="#"><i class="fe fe-grid"></i> <span>Timetable</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{ route('admin.timetable.periods') }}">Periods</a></li>
+        <li><a href="{{ route('admin.timetable.builder') }}">Builder</a></li>
+    </ul>
+</li>
+
 
                         {{-- ── Settings ── --}}
                         <li class="menu-title"><h6>Settings</h6></li>
