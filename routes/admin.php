@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AcademicSessionController;
 use App\Http\Controllers\Admin\ArmSubjectController;
 use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\AttendanceReportController;
+use App\Http\Controllers\Admin\BroadsheetController;
 use App\Http\Controllers\Admin\ClassArmController;
 use App\Http\Controllers\Admin\ClassLevelController;
 use App\Http\Controllers\Admin\ParentController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\FeeReportController;
 use App\Http\Controllers\Admin\FeeStructureController;
 use App\Http\Controllers\Admin\LedgerController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\ScoreEntryController;
 use App\Http\Controllers\Admin\SmsController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherAssignmentController;
@@ -285,6 +287,23 @@ Route::get('/timetable/print', [TimetableController::class, 'print'])->name('tim
 
 
 
+Route::get('/scores/dashboard', [ScoreEntryController::class, 'dashboard'])->name('scores.dashboard');
+Route::get('/scores/ca/{armSubject}', [ScoreEntryController::class, 'editCaScores'])->name('scores.ca-edit');
+Route::post('/scores/ca/{armSubject}', [ScoreEntryController::class, 'updateCaScores'])->name('scores.ca-update');
+Route::get('/scores/exam/{armSubject}', [ScoreEntryController::class, 'editExamScores'])->name('scores.exam-edit');
+Route::post('/scores/exam/{armSubject}', [ScoreEntryController::class, 'updateExamScores'])->name('scores.exam-update');
+Route::post('/scores/unlock/{armSubject}', [ScoreEntryController::class, 'unlockScores'])->name('scores.unlock');
+Route::post('/scores/publish', [ScoreEntryController::class, 'publishResults'])->name('scores.publish');
 
+  // Broadsheet selection
+    Route::get('/results/broadsheet', [BroadsheetController::class, 'index'])
+        ->name('results.broadsheet');
 
+    // Export to Excel
+    Route::get('/results/broadsheet/export', [BroadsheetController::class, 'export'])
+        ->name('results.export');
+
+    // Recalculate all results
+    Route::post('/results/broadsheet/recalculate', [BroadsheetController::class, 'recalculate'])
+        ->name('results.recalculate');
 });

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Teacher\AttendanceController;
+use App\Http\Controllers\Teacher\CaScoreController;
+use App\Http\Controllers\Teacher\ExamScoreController;
 use App\Http\Controllers\Teacher\QuestionController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +34,20 @@ Route::get('/attendance/report', [AttendanceController::class, 'report'])->name(
 Route::get('/timetable', [\App\Http\Controllers\Teacher\TimetableController::class, 'index'])->name('timetable');
 
 
+// 225. Score Entry Index
+Route::get('/scores', [CaScoreController::class, 'index'])->name('ca-scores.index');
 
+// 226. CA Score Entry Form
+Route::get('/ca-scores/{armSubject}', [CaScoreController::class, 'showForm'])->name('ca-scores.form');
+// 229. CA Score Save
+Route::post('/ca-scores/{armSubject}', [CaScoreController::class, 'store'])->name('ca-scores.store');
+
+// 235. Exam Score Entry Form
+Route::get('/exam-scores/{armSubject}', [ExamScoreController::class, 'showForm'])->name('exam-scores.form');
+// 237. Exam Score Save
+Route::post('/exam-scores/{armSubject}', [ExamScoreController::class, 'store'])->name('exam-scores.store');
+// 240. Submit for Review
+Route::post('/exam-scores/{armSubject}/submit', [ExamScoreController::class, 'submitForReview'])->name('exam-scores.submit');
 
 
 
